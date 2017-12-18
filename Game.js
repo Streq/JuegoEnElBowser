@@ -24,6 +24,7 @@ function Bullet(posx,posy,velx,vely){
     this.vel = new Vec2f(velx,vely);
     this.rad = 4;
     this.time = 1000;
+    this.damping = 5;
 }
 function update(dt){
 	//input
@@ -53,8 +54,8 @@ function update(dt){
             ( new Bullet
 				( player.pos.x+player.w/2
 				, player.pos.y+player.h/2
-				, -dir.x*100
-				, -dir.y*100
+				, -dir.x*200 + player.vel.x
+				, -dir.y*200 + player.vel.y
 				)
 			)
 		;
@@ -75,17 +76,30 @@ function update(dt){
 				bullets.splice(num,1);
 				return;
 			}
+            var dampFact = Math.approach(1, 0, bul.damping * dtsecs);
+            bul.vel.x*=dampFact;
+            bul.vel.y*=dampFact;
+			
 			bul.pos.x += bul.vel.x * dtsecs;
             bul.pos.y += bul.vel.y * dtsecs;
-			bul.rad += 100 * dtsecs;
+            bul.rad += 100 * dtsecs;
         }
     );
 }
 function render(dt){
-	ctx.fillStyle = "#00FF00";
-	ctx.globalAlpha = 1;
+    ctx.resetTransform();
     ctx.clearRect(0,0,canvas.width,canvas.height);
-	ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
+    var scaleFact = 0.25;
+    ctx.scale(scaleFact,scaleFact);
+	ctx.translate //set view to player
+        (-player.pos.x + canvas.width*0.5/scaleFact
+        ,-player.pos.y + canvas.height*0.5/scaleFact
+        )
+    ;
+    ctx.fillStyle = "#00FF00";
+	ctx.globalAlpha = 1;
+    
+    ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
     
 	
 	ctx.fillStyle = "#ffa500";
