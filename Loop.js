@@ -1,15 +1,32 @@
 //Loop
+var frameTime = 1000/60;
+var timeSinceLastUpdate = 0;
+
+function Clock(){
+    this.lastReset = Date.now();
+    this.restart = function(){
+        var now = Date.now();
+        var ret = now - this.lastReset;
+        this.lastReset = now;
+        return ret;
+    }
+}
+
+var clock = new Clock();
+
 function start(){
-    lastUpdate = Date.now();
+    clock.restart();
 	setInterval(tick,0);
 }
 
 
 function tick(){
-	var now = Date.now();
-	var dt = now - lastUpdate;
-	lastUpdate = now;
-	
-	update(dt);
-	render(dt);
+	var dt = clock.restart();
+    timeSinceLastUpdate += dt;
+    
+    while(timeSinceLastUpdate >= frameTime){
+        timeSinceLastUpdate -= frameTime;
+        update(frameTime);
+        render(frameTime);
+    }
 };
