@@ -1,19 +1,19 @@
 function Key(code){
-    this.code = code;
-    
-    this.pressed = false;
-    this.just_updated = false;
-    
-    this.update = function(val){
-        this.just_updated = (val!=this.pressed);
-        this.pressed = val;
-    }
-    
-    this.clear = function(){this.pressed=false; this.just_updated=false;}
-    
-//    this.whilePressed = function(){};
-//    this.onRelease = function(){};
-//    this.onPress = function(){};
+	this.code = code;
+	
+	this.pressed = false;
+	this.just_updated = false;
+	
+	this.update = function(val){
+		this.just_updated = (val!=this.pressed);
+		this.pressed = val;
+	}
+	
+	this.clear = function(){this.pressed=false; this.just_updated=false;}
+	
+//	this.whilePressed = function(){};
+//	this.onRelease = function(){};
+//	this.onPress = function(){};
 }
 
 function handleKeyDown(event) {
@@ -30,10 +30,10 @@ function handleKeyUp(event) {
 };
 function setInput(code, pressed){
 	for(key in input){
-        if(input[key].code==code){
-            input[key].update(pressed);
-        }
-    }
+		if(input[key].code==code){
+			input[key].update(pressed);
+		}
+	}
 }
 
 document.onkeydown = handleKeyDown;
