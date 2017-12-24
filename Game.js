@@ -39,12 +39,31 @@ function update(dt){
 	
 	player.update(dtsecs);
 	
+    var hayColision = false;
+    walls.forEach(
+        function(wall){
+            hayColision = hayColision || 
+                checkCollisionAABB(
+                    player.pos.x, player.pos.y, player.w, player.h,
+                    wall.pos.x, wall.pos.y, wall.w, wall.h
+                )
+            ;
+        }
+    );
+    if(hayColision){
+        player.pos.x=canvas.width/2;
+        player.pos.y=canvas.height/2;
+        player.vel.x = 0;
+        player.vel.y = 0;
+        
+    }
+    
+	
 	bullets.forEach(
 		function(bul,num){
 			bul.update(dtsecs);
 		}
 	);
-	
 		
 	bullets.forEach(
 		function(bul,num){
@@ -70,14 +89,16 @@ function render(dt){
 	ctx.globalAlpha = 1;
 	ctx.fillRect(0,0,1000,1000);
 	
-	
-	ctx.fillStyle = "#00FF00";
-	ctx.globalAlpha = 1;
-	ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
-	
+	ctx.fillStyle = "#aaaaaa";
+    ctx.globalAlpha = 1;
+    walls.forEach(
+        function(wall){
+			ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
+		}
+    );
+    
 	
 	ctx.fillStyle = "#ffa500";
-	
 	bullets.forEach
 	(		
 		function(bul){
@@ -88,6 +109,11 @@ function render(dt){
 			ctx.closePath();
 		}
 	);
+    
+    ctx.fillStyle = "#00FF00";
+	ctx.globalAlpha = 1;
+	ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
+	
 			
 	//ctx.drawImage(playerImg,player.x,player.y);
 }

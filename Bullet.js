@@ -1,8 +1,8 @@
-Bullet.time = 1.25;
+Bullet.time = 1;
 Bullet.gravity = -1000;
 Bullet.speed = 1000;
 Bullet.damping = 5;
-Bullet.growthRate = 100;
+Bullet.growthRate = 150;
 function Bullet(posx,posy,velx,vely){
 	this.pos = new Vec2f(posx,posy);
 	this.vel = new Vec2f(velx,vely);
