@@ -38,11 +38,11 @@ function drawCollisionCheck(x0, y0, w0, h0, velx, vely){
 	var boundy = Math.min(y0, y0 - vely);
 	var boundw = w0 + Math.abs(velx);
 	var boundh = h0 + Math.abs(vely);
-	ctx.fillStyle = "blue";
-	ctx.globalAlpha = 1;
+	ctx.globalAlpha = 0.5;
+	ctx.fillStyle = "yellow";
 	ctx.fillRect(boundx, boundy, boundw, boundh);
 	
-	ctx.fillStyle = "#006600";
+	ctx.fillStyle = "#660000";
 	var abvelx = Math.abs(velx);
 	var abvely = Math.abs(vely);
 	var steps = Math.ceil((abvelx>abvely) ? abvelx : abvely);
