@@ -1,6 +1,7 @@
 //Loop
 var fps = 60
 var frameTime = 1000/fps;
+var frameSecs = 1/fps;
 var timeSinceLastUpdate = 0;
 
 function Clock(){

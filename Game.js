@@ -30,8 +30,8 @@ function update(dt){
 		((input.down.pressed | 0) - (input.up.pressed | 0))
 	);
 	if(dir.y!=0 && dir.x!=0){
-		dir.x *= halfsqrt2;
-		dir.y *= halfsqrt2;
+		dir.x *= Math.SQRT1_2;
+		dir.y *= Math.SQRT1_2;
 	}
 	
 	player.dir.x=dir.x;
@@ -43,9 +43,10 @@ function update(dt){
     walls.forEach(
         function(wall){
             hayColision = hayColision || 
-                checkCollisionAABB(
+                checkCollisionAABBMovement(
                     player.pos.x, player.pos.y, player.w, player.h,
-                    wall.pos.x, wall.pos.y, wall.w, wall.h
+                    wall.pos.x, wall.pos.y, wall.w, wall.h,
+					player.vel.x * dtsecs, player.vel.y * dtsecs
                 )
             ;
         }
@@ -89,15 +90,6 @@ function render(dt){
 	ctx.globalAlpha = 1;
 	ctx.fillRect(0,0,1000,1000);
 	
-	ctx.fillStyle = "#aaaaaa";
-    ctx.globalAlpha = 1;
-    walls.forEach(
-        function(wall){
-			ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
-		}
-    );
-    
-	
 	ctx.fillStyle = "#ffa500";
 	bullets.forEach
 	(		
@@ -110,6 +102,21 @@ function render(dt){
 		}
 	);
     
+	ctx.fillStyle = "#aaaaaa";
+    ctx.globalAlpha = 1;
+    walls.forEach(
+        function(wall){
+			ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
+		}
+    );
+    
+	
+	if(debugDraw){
+		var vely = player.vel.y*frameSecs;
+		var velx = player.vel.x*frameSecs;
+		drawCollisionCheck(player.pos.x,player.pos.y,player.w,player.h,velx,vely);
+	}
+	
     ctx.fillStyle = "#00FF00";
 	ctx.globalAlpha = 1;
 	ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
