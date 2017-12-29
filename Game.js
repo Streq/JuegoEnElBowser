@@ -1,3 +1,5 @@
+var view = new View(0, 0, 0, 0, canvas.width/2, canvas.height/2);
+view.setScale(4,4);
 
 player = new Player(0,0,0,0);
 
@@ -15,7 +17,7 @@ input =
 
 var walls = [];
 
-var bullets = [];
+var smokes = [];
 
 function update(dt){
 	//input
@@ -60,16 +62,16 @@ function update(dt){
     }
     
 	
-	bullets.forEach(
+	smokes.forEach(
 		function(bul,num){
 			bul.update(dtsecs);
 		}
 	);
 		
-	bullets.forEach(
+	smokes.forEach(
 		function(bul,num){
 			if(bul.destroy){
-				bullets.splice(num,1);
+				smokes.splice(num,1);
 			}
 		}
 	);
@@ -78,30 +80,33 @@ function update(dt){
 function render(dt){
 	ctx.resetTransform();
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	var scaleFact = 0.25;
-	ctx.scale(scaleFact,scaleFact);
+	view.cx = player.pos.x;
+    view.cy = player.pos.y;
+    view.applyTransform(ctx);
+    //ctx.scale(scaleFact,scaleFact);
 	
-	ctx.translate //set view to player
-		(-player.pos.x + canvas.width*0.5/scaleFact
-		,-player.pos.y + canvas.height*0.5/scaleFact
-		)
-	;
+	//ctx.translate //set view to player
+	//	(-player.pos.x + canvas.width*0.5/scaleFact
+	//	,-player.pos.y + canvas.height*0.5/scaleFact
+	//	)
+	//;
 	ctx.fillStyle = "#444444";
 	ctx.globalAlpha = 1;
 	ctx.fillRect(0,0,1000,1000);
 	
-	ctx.fillStyle = "#ffa500";
-	bullets.forEach
-	(		
-		function(bul){
-			ctx.globalAlpha = bul.time/Bullet.time;
-			ctx.beginPath();
-			ctx.arc(bul.pos.x, bul.pos.y, bul.rad, 0, 2 * Math.PI);
-			ctx.fill();
-			ctx.closePath();
-		}
-	);
-    
+	if(drawSmoke){
+        ctx.fillStyle = "#ffa500";
+        smokes.forEach
+        (		
+            function(bul){
+                ctx.globalAlpha = bul.time/Smoke.time;
+                ctx.beginPath();
+                ctx.arc(bul.pos.x, bul.pos.y, bul.rad, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.closePath();
+            }
+        );
+    }
 	ctx.fillStyle = "#aaaaaa";
     ctx.globalAlpha = 1;
     walls.forEach(

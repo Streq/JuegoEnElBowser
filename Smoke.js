@@ -1,13 +1,13 @@
-Bullet.time = 1;
-Bullet.gravity = -1000;
-Bullet.speed = 1000;
-Bullet.damping = 5;
-Bullet.growthRate = 150;
-function Bullet(posx,posy,velx,vely){
+Smoke.time = 1;
+Smoke.gravity = -1000;
+Smoke.speed = 1000;
+Smoke.damping = 5;
+Smoke.growthRate = 150;
+function Smoke(posx,posy,velx,vely){
 	this.pos = new Vec2f(posx,posy);
 	this.vel = new Vec2f(velx,vely);
 	this.rad = 4;
-	this.time = Bullet.time;
+	this.time = Smoke.time;
 	this.destroy = false;
 	
 	this.update = 
@@ -18,14 +18,14 @@ function Bullet(posx,posy,velx,vely){
 				return;
 			}
 			
-			this.vel.y += Bullet.gravity * dtsecs;
-			var dampFact = Math.approach(1, 0, Bullet.damping * dtsecs);
+			this.vel.y += Smoke.gravity * dtsecs;
+			var dampFact = Math.approach(1, 0, Smoke.damping * dtsecs);
 			this.vel.x *= dampFact;
 			this.vel.y *= dampFact;
 			
 			this.pos.x += this.vel.x * dtsecs;
 			this.pos.y += this.vel.y * dtsecs;
-			this.rad += Bullet.growthRate * dtsecs;
+			this.rad += Smoke.growthRate * dtsecs;
 		}
 	;
 }

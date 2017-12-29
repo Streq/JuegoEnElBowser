@@ -1,5 +1,6 @@
 Player.speed = 5000
-Player.bulletSpeed = 500
+Player.smokeSpeed = 500
+Player.gravity = 200
 function Player(x,y,vx,vy){
 	this.pos = new Vec2f(x,y);
 	this.vel = new Vec2f(vx,vy);
@@ -10,7 +11,7 @@ function Player(x,y,vx,vy){
 	this.update = 
 		function(dtsecs){
 			var dampFact = Math.approach(1, 0, this.damping * dtsecs);
-			this.vel.y += 200 * dtsecs;
+			this.vel.y +=  Player.gravity * dtsecs;
 			this.vel.x *= dampFact;
 			this.vel.y *= dampFact;
 			if(this.dir.x!=0||this.dir.y!=0){
@@ -18,12 +19,12 @@ function Player(x,y,vx,vy){
 				this.vel.x += Player.speed * this.dir.x * dtsecs;
 				this.vel.y += Player.speed * this.dir.y * dtsecs;
 				
-				bullets.push
-					( new Bullet
+				smokes.push
+					( new Smoke
 						( this.pos.x + this.w/2
 						, this.pos.y + this.h/2
-						, -this.dir.x*Player.bulletSpeed + this.vel.x
-						, -this.dir.y*Player.bulletSpeed + this.vel.y
+						, -this.dir.x*Player.smokeSpeed + this.vel.x
+						, -this.dir.y*Player.smokeSpeed + this.vel.y
 						)
 					)
 				;
