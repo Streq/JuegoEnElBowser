@@ -80,8 +80,8 @@ function update(dt){
 function render(dt){
 	ctx.resetTransform();
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	view.cx = player.pos.x;
-    view.cy = player.pos.y;
+	view.centerX = player.pos.x;
+    view.centerY = player.pos.y;
     view.applyTransform(ctx);
     //ctx.scale(scaleFact,scaleFact);
 	
