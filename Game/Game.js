@@ -68,13 +68,14 @@ function update(dt){
 		}
 	);
 		
-	smokes.forEach(
-		function(bul,num){
-			if(bul.destroy){
-				smokes.splice(num,1);
-			}
+	for(var i = smokes.length-1;i>=0;--i){
+		if(smokes[i].destroy){
+			smokes.splice(i,1);
 		}
-	);
+	}
+		
+		
+	
 	
 }
 function render(dt){
