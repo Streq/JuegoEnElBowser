@@ -1,7 +1,15 @@
 var view = new View(0, 0, 0, 0, canvas.width/2, canvas.height/2);
 view.setScale(4,4);
 
-player = new Player(0,0,0,0);
+var World = (function(mod){
+	mod.player = new Player(0,0,0,0);
+	mod.walls = [];
+	mod.smokes = [];
+
+	
+	return mod;
+}(World||{}));
+
 
 input = 
 	{
@@ -15,11 +23,12 @@ input =
 
 //var playerImg = document.getElementById("img_player");
 
-var walls = [];
-
-var smokes = [];
 
 function update(dt){
+	var player = World.player;
+	var walls = World.walls;
+	var smokes = World.smokes;
+	
 	//input
 	if(input.restart.pressed){
 		player.pos.x=canvas.width/2;
@@ -73,60 +82,6 @@ function update(dt){
 			smokes.splice(i,1);
 		}
 	}
-		
-		
-	
 	
 }
-function render(dt){
-	ctx.resetTransform();
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	view.centerX = player.pos.x;
-    view.centerY = player.pos.y;
-    view.applyTransform(ctx);
-    //ctx.scale(scaleFact,scaleFact);
-	
-	//ctx.translate //set view to player
-	//	(-player.pos.x + canvas.width*0.5/scaleFact
-	//	,-player.pos.y + canvas.height*0.5/scaleFact
-	//	)
-	//;
-	ctx.fillStyle = "#444444";
-	ctx.globalAlpha = 1;
-	ctx.fillRect(0,0,1000,1000);
-	
-	if(drawSmoke){
-        ctx.fillStyle = "#ffa500";
-        smokes.forEach
-        (		
-            function(bul){
-                ctx.globalAlpha = bul.time/Smoke.time;
-                ctx.beginPath();
-                ctx.arc(bul.pos.x, bul.pos.y, bul.rad, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.closePath();
-            }
-        );
-    }
-	ctx.fillStyle = "#aaaaaa";
-    ctx.globalAlpha = 1;
-    walls.forEach(
-        function(wall){
-			ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
-		}
-    );
-    
-	
-	if(debugDraw){
-		var vely = player.vel.y*frameSecs;
-		var velx = player.vel.x*frameSecs;
-		drawCollisionCheck(player.pos.x,player.pos.y,player.w,player.h,velx,vely);
-	}
-	
-    ctx.fillStyle = "#00FF00";
-	ctx.globalAlpha = 1;
-	ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
-	
-			
-	//ctx.drawImage(playerImg,player.x,player.y);
-}
+

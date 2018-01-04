@@ -7,6 +7,8 @@ Player.prototype.accelerate =
 		this.vel.x += Player.speed * dir.x * dtsecs;
 		this.vel.y += Player.speed * dir.y * dtsecs;
 		
+		var smokes = World.smokes;
+	
 		smokes.push
 			( new Smoke
 				( this.pos.x + this.w*(1+dir.x)*0.5

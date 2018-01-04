@@ -18,7 +18,8 @@ var clock = new Clock();
 
 function start(){
 	clock.restart();
-    walls.push(new Wall(0,100,500,50));
+    var walls = World.walls;
+	walls.push(new Wall(0,100,500,50));
     walls.push(new Wall(500,100,50,500));
     walls.push(new Wall(1000,100,500,50));
     

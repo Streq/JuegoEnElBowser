@@ -22,7 +22,8 @@ function loadGame(prefix){
 		"Smoke.js",
 		"Player.js",
 		"Game.js",
-		"Loop.js"
+		"Loop.js",
+		"Render.js"
 	].map(
 		function(src){
 			return prefix+src;
