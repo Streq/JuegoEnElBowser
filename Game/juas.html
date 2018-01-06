@@ -1,0 +1,201 @@
+<html>
+    <head>
+        <style>
+            canvas {
+                border:1px solid #000000;
+                background-color: #ffffff;
+            }
+            span {
+              display: inline-block;
+              width: 150px;
+            }
+            .button {
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+            }
+            
+            .imposeBlock {
+                position: fixed;
+                float: left;
+                margin: 125px 0 0 125px;
+                height: 100px;
+                width: 100px;
+                background-color: #777777;
+                color: azure;
+            }
+            .container { 
+                white-space: nowrap; 
+            }
+            .column { 
+                display: inline-block; 
+                white-space: normal; 
+                vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="column" id="canvasCont">
+                <div class="imposeBlock">child</div>
+                <canvas id="canvas" width="350" height="350"></canvas>
+            </div>
+
+            <div class="column">
+                <span>mousedown:</span><input type="checkbox" id="mousedown" checked="true"><br>
+                <span>click:</span><input type="checkbox" id="click" checked="true"><br>
+                <span>mouseup:</span><input type="checkbox" id="mouseup" checked="true"><br>
+                <span>mouseover:</span><input type="checkbox" id="mouseover" checked="true"><br>
+                <span>mouseenter:</span><input type="checkbox" id="mouseenter" checked="true"><br>
+                <span>mouseout:</span><input type="checkbox" id="mouseout" checked="true"><br>
+                <span>mouseleave:</span><input type="checkbox" id="mouseleave" checked="true"><br>
+                <span>mousemove:</span><input type="checkbox" id="mousemove" checked="true"><br>
+                <span>contextmenu:</span><input type="checkbox" id="contextmenu" checked="true"><br>
+                <span>dblclick:</span><input type="checkbox" id="dblclick" checked="true"><br>
+                <button id="button" class="button">clear</button><br>
+            </div>
+        </div>
+        <script>
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var rect = canvas.getBoundingClientRect();
+            function canvasCoords(e){
+                return {
+                x:e.clientX-canvas.offsetLeft,
+                y:e.clientY-canvas.offsetTop
+              };
+            }
+
+            var button = document.getElementById("button");
+            button.onclick= function(){
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+            }
+
+            var mousedown = document.getElementById("mousedown");
+            var click = document.getElementById("click");
+            var mouseup = document.getElementById("mouseup");
+            var mouseover = document.getElementById("mouseover");
+            var mouseenter = document.getElementById("mouseenter");
+            var mouseout = document.getElementById("mouseout");
+            var mouseleave = document.getElementById("mouseleave");
+            var mousemove = document.getElementById("mousemove");
+            var contextmenu = document.getElementById("contextmenu");
+            var dblclick = document.getElementById("dblclick");
+
+            var canvasCont = document.getElementById("canvasCont");
+
+            function drawSquare (x,y,size,color){
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 1;
+                var hs=size/2;
+                ctx.fillRect(x-hs,y-hs,size,size);
+            }
+            function drawCircle (x,y,radius,color){
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 1;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.closePath();
+                
+            }
+            function drawPlus (x,y,size,width,color){
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = 1;
+                ctx.lineWidth=width;
+                ctx.beginPath();
+                ctx.moveTo(x,y-size);
+                ctx.lineTo(x,y+size);
+                ctx.moveTo(x-size,y);
+                ctx.lineTo(x+size,y);
+                ctx.stroke();
+            }
+            function drawX (x,y,size,width,color){
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = 1;
+                ctx.lineWidth = width;
+                ctx.beginPath();
+                var hs = size/2;
+                ctx.moveTo(x-hs,y-hs);
+                ctx.lineTo(x+hs,y+hs);
+                ctx.moveTo(x-hs,y+hs);
+                ctx.lineTo(x+hs,y-hs);
+                ctx.stroke();
+            }
+            
+            canvasCont.onmousedown = function(e){
+                if(!mousedown.checked)return;
+                var pos = canvasCoords(e);
+                drawX(pos.x,pos.y,16,5,"green");
+              return false;
+            };
+
+            //needs mousedown to happen on the same element
+            canvasCont.onclick = function(e){
+                if(!click.checked)return;
+                var pos = canvasCoords(e);
+                drawSquare(pos.x,pos.y,10,"orange");
+                return false;
+            };
+
+            //doesn't need mousedown to happen on the same element
+            canvasCont.onmouseup = function(e){
+                if(!mouseup.checked)return;
+                var pos = canvasCoords(e);
+                drawPlus(pos.x,pos.y,12,5,"red");
+                return false;
+            };
+            canvasCont.onmousemove = function(e){
+                if(!mousemove.checked)return;
+                var pos = canvasCoords(e);
+                drawSquare(pos.x,pos.y,4,"#555555");
+                return false;
+            };
+
+            canvasCont.onmouseleave = function(e){
+                if(!mouseleave.checked)return;
+                var pos = canvasCoords(e);
+                drawPlus(pos.x,pos.y,12,3,"#00ff00");
+                return false;
+            };
+
+            //called when mouse leaves inner elements too
+            canvasCont.onmouseout = function(e){
+                if(!mouseout.checked)return;
+                var pos = canvasCoords(e);
+                drawCircle(pos.x,pos.y,15,"purple");
+                return false;
+            };
+
+            //called when mouse enters inner elements too
+            canvasCont.onmouseover = function(e){
+                if(!mouseover.checked)return;
+                var pos = canvasCoords(e);
+                drawCircle(pos.x,pos.y,10,"green");
+                return false;
+            };
+
+            canvasCont.onmouseenter = function(e){
+                if(!mouseenter.checked)return;
+                var pos = canvasCoords(e);
+                drawPlus(pos.x,pos.y,12,3,"orange");
+                return false;
+            };
+
+            canvasCont.oncontextmenu = function(e){
+                if(!contextmenu.checked)return;
+                var pos = canvasCoords(e);
+                drawPlus(pos.x,pos.y,20,2,"#00ff00");
+                return false;
+            }
+            canvasCont.ondblclick = function(e){
+                if(!dblclick.checked)return;
+                var pos = canvasCoords(e);
+                drawX(pos.x,pos.y,30,2,"blue");
+                return false;
+            }
+        </script>
+    </body>
+</html>
