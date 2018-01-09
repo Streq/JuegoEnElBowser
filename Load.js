@@ -11,7 +11,7 @@ function loadSrc(srcs){
 }
 
 function loadGame(prefix){
-	var dependencies = [
+	var gameDependencies = [
 		"Collision.js",
 		"View.js",
 		"Vec2f.js",
@@ -26,9 +26,33 @@ function loadGame(prefix){
 		"Render.js"
 	].map(
 		function(src){
-			return prefix+src;
+			return prefix+"Game/"+src;
 		}
 	);
 	
-	loadSrc(dependencies);
+	var utilDependencies = [
+		"jquery-3.2.1.min.js"
+	].map(
+		function(src){
+			return prefix+"Utils/"+src;
+		}
+	);
+	
+	loadSrc(utilDependencies);
+	loadSrc(gameDependencies);
+	
+}
+
+
+function loadEditor(prefix){
+	var utilDependencies = [
+		"jquery-3.2.1.min.js"
+	].map(
+		function(src){
+			return prefix+"Utils/"+src;
+		}
+	);
+	
+	loadSrc(utilDependencies);
+	
 }

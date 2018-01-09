@@ -1,0 +1,169 @@
+<html>
+    <head>
+		<script src="Utils/jquery-3.2.1.min.js"></script>
+        <style>
+            canvas {
+                border:1px solid #d3d3d3;
+                background-color: #333333;
+            }
+            
+            .container { 
+                white-space: nowrap; 
+            }
+            .column { 
+                display: inline-block; 
+                white-space: normal; 
+                vertical-align: top; 
+            }
+			
+			li {
+				border:1px solid #000000;
+			}
+			
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="column">
+                <canvas id="canvas" width = 600 height = 400></canvas>
+            </div>
+            <div class="column">
+                <div>Action</div>
+                <select id="action">
+                    <option value="select">select</option>
+                    <option value="create">create</option>
+                    <option value="spawn">spawn</option>
+                </select>
+                
+                <div>Values</div>
+				X:<input id="x" type="number">
+                Y:<input id="y" type="number"><br>
+                <div id="mainTemplate">
+					
+					Item
+					<select id="item">
+						<option value="wall">wall</option>
+						<option value="goal">goal</option>
+						<option value="player">player</option>
+					</select>
+
+					W:<input id="w" type="number">
+					H:<input id="h" type="number"><br>
+				</div>
+                <button id="savetemplate" onclick="saveTemplate();">Save Template</button>
+				
+				<div>Templates</div>
+				<div id="templates"></div>
+            </div>
+        </div>
+    </body>
+    
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var walls = [];
+        var goals = [];
+		
+        var goalColor = "#0000ff";
+        var wallColor = "#777777";
+        var playerColor = "#00ff00";
+        var player={x:0,y:0,w:0,h:0};
+        
+        var gx=document.getElementById("x");
+        var gy=document.getElementById("y");
+        var gw=document.getElementById("w");
+        var gh=document.getElementById("h");
+        
+        var item=document.getElementById("item");
+        var action=document.getElementById("action");
+        var templates = document.getElementById("templates");
+        var mainTemplate = document.getElementById("mainTemplate");
+		
+        function Rect(x,y,w,h){
+            this.x=x;
+            this.y=y;
+            this.w=w;
+            this.h=h;
+        }
+        
+        function getPos(e){
+            return {
+                x:e.clientX-canvas.offsetLeft,
+                y:e.clientY-canvas.offsetTop
+            };
+        };
+        
+        canvas.onclick=function(e){
+            var pos = getPos(e);
+            var square = new Rect(pos.x,pos.y,gw.value,gh.value);
+            if(item.value=="wall"){
+                walls.push(square);
+            }
+            if(item.value=="goal"){
+                goals.push(square);
+            }
+            if(item.value=="player"){
+                player=square;
+            }
+        }
+        
+        canvas.onmousemove=function(e){
+            var pos = getPos(e);
+            gx.value=pos.x;
+            gy.value=pos.y;
+        }
+        
+        function render(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            
+            ctx.fillStyle=wallColor;
+            walls.forEach(function(wall){
+                ctx.fillRect(wall.x,wall.y,wall.w,wall.h);
+            });
+            
+            ctx.fillStyle=goalColor;
+            goals.forEach(function(wall){
+                ctx.fillRect(wall.x,wall.y,wall.w,wall.h);
+            });
+            
+            ctx.fillStyle=playerColor;
+            ctx.fillRect(player.x,player.y,player.w,player.h);
+            
+            if(item.value=="wall"){ctx.fillStyle=wallColor;}
+            if(item.value=="goal"){ctx.fillStyle=goalColor;}
+            if(item.value=="player"){ctx.fillStyle=playerColor;}
+            
+            ctx.fillRect(gx.value, gy.value, gw.value, gh.value);
+            
+        }
+        
+		function saveTemplate(){
+			var cln=mainTemplate.cloneNode(true);
+			
+			cln.firstElementChild.value = mainTemplate.firstElementChild.value;
+				
+			var use=document.createElement("button");
+			use.innerHTML="Select";
+			use.owner=cln;
+			use.onclick=function(){
+				this.owner.reemplazar();
+			};
+			cln.reemplazar=function(){
+				var auxNode = this.firstElementChild;
+				item.value=auxNode.value;
+				
+				auxNode=auxNode.nextElementSibling;
+				gw.value=auxNode.value;
+				
+				auxNode=auxNode.nextElementSibling;
+				gh.value=auxNode.value;
+			}
+			
+			templates.appendChild(use);
+			templates.appendChild(cln);
+		}
+		
+		
+        setInterval(render,0);
+    </script>
+</html>
