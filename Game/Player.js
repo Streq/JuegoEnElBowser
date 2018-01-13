@@ -32,8 +32,8 @@ Player.prototype.update =
 			var dir2 = this.dir.rotate(Math.toRadians(-30));
 			
 			this.accelerate(this.dir, dtsecs);
-			this.accelerate(dir1, dtsecs);
-			this.accelerate(dir2, dtsecs);
+			//this.accelerate(dir1, dtsecs);
+			//this.accelerate(dir2, dtsecs);
 		}
 		//move
 		this.pos.x += this.vel.x * dtsecs;

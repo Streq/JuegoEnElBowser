@@ -1,8 +1,22 @@
 //Loop
-var fps = 60
-var frameTime = 1000/fps;
-var frameSecs = 1/fps;
-var timeSinceLastUpdate = 0;
+var Logic = (function(mod){
+	Object.defineProperty(mod, "FPS", 
+		{
+			set: function(x){
+				this.frameTime = 1000/x;
+				this.frameSecs = 1/x;
+				this.fps=x;
+			},
+			get: function(){
+				return this.fps;
+			}
+		}
+	);
+	mod.FPS = 60;
+	mod.timeSinceLastUpdate = 0;
+	return mod;
+	
+}(Logic||{}));
 
 function Clock(){
 	this.lastReset = Date.now();
@@ -19,21 +33,24 @@ var clock = new Clock();
 function start(){
 	clock.restart();
     var walls = World.walls;
-	walls.push(new Wall(0,100,500,50));
-    walls.push(new Wall(500,100,50,500));
-    walls.push(new Wall(1000,100,500,50));
-    
-	setInterval(tick,0);
+	World.walls=
+		[
+			{"pos":{"x":0,"y":0},"w":100,"h":3000},
+			{"pos":{"x":0,"y":0},"w":5100,"h":100},
+			{"pos":{"x":0,"y":3000},"w":5100,"h":100}
+		]
+	;
+    setInterval(tick,0);
 }
 
 
 function tick(){
 	var dt = clock.restart();
-	timeSinceLastUpdate += dt;
+	Logic.timeSinceLastUpdate += dt;
 	
-	while(timeSinceLastUpdate >= frameTime){
-		timeSinceLastUpdate -= frameTime;
-		update(frameTime);
-		render(frameTime);
+	while(Logic.timeSinceLastUpdate >= Logic.frameTime){
+		Logic.timeSinceLastUpdate -= Logic.frameTime;
+		update(Logic.frameTime);
+		render(Logic.frameTime);
 	}
 };

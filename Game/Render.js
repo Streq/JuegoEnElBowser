@@ -1,10 +1,37 @@
 var Graphics = (function(mod){
 	mod.debugDraw = false;
 	mod.drawSmoke = true;
+	
+	Object.defineProperty(mod, "FPS", 
+		{
+			set: function(x){
+				this.frameTime = 1000/x;
+				this.frameSecs = 1/x;
+				this.fps=x;
+			},
+			get: function(){
+				return this.fps;
+			}
+		}
+	);
+	mod.FPS = 60;
+	mod.timeSinceLastUpdate = 0;
+	return mod;
+	
+	//private var
+	mod.timeSinceLastUpdate = 0;
 	return mod;
 }(Graphics||{}));
 
 function render(dt){
+	Graphics.timeSinceLastUpdate += dt;
+	
+	if(Graphics.timeSinceLastUpdate < Graphics.frameTime){
+		return;
+	}
+	
+	Graphics.timeSinceLastUpdate = 0;
+	
 	var player = World.player;
 	var walls = World.walls;
 	var smokes = World.smokes;
@@ -43,8 +70,8 @@ function render(dt){
     
 	
 	if(Graphics.debugDraw){
-		var vely = player.vel.y*frameSecs;
-		var velx = player.vel.x*frameSecs;
+		var vely = player.vel.y*Logic.frameSecs;
+		var velx = player.vel.x*Logic.frameSecs;
 		drawCollisionCheck(player.pos.x,player.pos.y,player.w,player.h,velx,vely);
 	}
 	
