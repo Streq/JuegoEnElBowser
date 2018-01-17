@@ -79,4 +79,10 @@ function render(dt){
 	ctx.globalAlpha = 1;
 	ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
 	
+	
+	ctx.resetTransform();
+	ctx.fillStyle = "#FFFFFF";
+	ctx.globalAlpha = 1;
+	ctx.font = "25px Arial";
+	ctx.fillText(World.timer.toFixed(1),10,25);
 }

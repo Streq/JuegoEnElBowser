@@ -1,11 +1,11 @@
 var view = new View(0, 0, 0, 0, canvas.width/2, canvas.height/2);
-view.setScale(4,4);
+view.setScale(8,8);
 
 var World = (function(mod){
 	mod.player = new Player(0,0,0,0);
 	mod.walls = [];
 	mod.smokes = [];
-
+	mod.timer = 0;
 	
 	return mod;
 }(World||{}));
@@ -31,11 +31,11 @@ function update(dt){
 	
 	//input
 	if(input.restart.pressed){
-		player.pos.x=canvas.width/2;
-		player.pos.y=canvas.height/2;
+		restart();
 	}
 	
 	var dtsecs=dt/1000;
+	World.timer+=dtsecs;
 	var dir = new Vec2f(
 		((input.right.pressed | 0) - (input.left.pressed | 0)),
 		((input.down.pressed | 0) - (input.up.pressed | 0))
@@ -63,11 +63,7 @@ function update(dt){
         }
     );
     if(hayColision){
-        player.pos.x=canvas.width/2;
-        player.pos.y=canvas.height/2;
-        player.vel.x = 0;
-        player.vel.y = 0;
-        
+		restart();
     }
     
 	
@@ -85,3 +81,8 @@ function update(dt){
 	
 }
 
+
+function restart(){
+	World.player = new Player(15100, 8100, 10, 10);
+	World.timer = 0;
+}
