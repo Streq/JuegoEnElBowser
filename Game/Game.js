@@ -5,7 +5,9 @@ var World = (function(mod){
 	mod.player = new Player(0,0,0,0);
 	mod.walls = [];
 	mod.smokes = [];
+	mod.goals = [];
 	mod.timer = 0;
+	mod.record = -1;
 	
 	return mod;
 }(World||{}));
@@ -28,7 +30,7 @@ function update(dt){
 	var player = World.player;
 	var walls = World.walls;
 	var smokes = World.smokes;
-	
+	var goals = World.goals;
 	//input
 	if(input.restart.pressed){
 		restart();
@@ -50,8 +52,22 @@ function update(dt){
 	
 	player.update(dtsecs);
 	
+	var hayGoal = false;
+	goals.forEach(
+        function(wall){
+            hayGoal = hayGoal || 
+                checkCollisionAABBMovement(
+                    player.pos.x, player.pos.y, player.w, player.h,
+                    wall.pos.x, wall.pos.y, wall.w, wall.h,
+					player.vel.x * dtsecs, player.vel.y * dtsecs
+                )
+            ;
+        }
+    );
+    
+	
     var hayColision = false;
-    walls.forEach(
+	walls.forEach(
         function(wall){
             hayColision = hayColision || 
                 checkCollisionAABBMovement(
@@ -62,9 +78,6 @@ function update(dt){
             ;
         }
     );
-    if(hayColision){
-		restart();
-    }
     
 	
 	smokes.forEach(
@@ -79,6 +92,17 @@ function update(dt){
 		}
 	}
 	
+	if(hayGoal){
+		if(World.record < 0 || World.record > World.timer){
+			World.record = World.timer;
+		}
+		restart();
+    }
+	
+	if(hayColision){
+		restart();
+    }
+    
 }
 
 
