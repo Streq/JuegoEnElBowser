@@ -63,9 +63,10 @@ function update(dt){
 		input.left = World.rec.frames[World.frameIndex].left;
 		input.right = World.rec.frames[World.frameIndex].right;
 		World.frameIndex++;
-	}else{
-		World.currentRecorder.update(input);
 	}
+	
+	World.currentRecorder.update(input);
+	
 	
 	
 	var dir = new Vec2f(
