@@ -2,8 +2,8 @@ function loadSrc(srcs){
 	srcs.forEach(
 		function(src){
 			var script = document.createElement("script");
-			script.src=src;
-			script.async=false;
+			script.src = src;
+			script.async = false;
 			document.head.appendChild(script);
 		}
 	);
@@ -12,6 +12,7 @@ function loadSrc(srcs){
 
 function loadGame(prefix){
 	var gameDependencies = [
+		"Recorder.js",
 		"Collision.js",
 		"View.js",
 		"Vec2f.js",

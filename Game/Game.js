@@ -8,39 +8,69 @@ var World = (function(mod){
 	mod.goals = [];
 	mod.timer = 0;
 	mod.record = -1;
+	mod.currentRecorder = new Recorder();
+	mod.recordedRecord = {};
+	
+	
+	mod.replaying=false;
+	mod.frameIndex=0;
+	mod.rec={};
 	
 	return mod;
 }(World||{}));
 
 
-input = 
+var rawInput = 
 	{
 		left : new Key(37),
 		up : new Key(38),
 		right : new Key(39),
 		down : new Key(40),
-		shoot : new Key(90),
+		replay : new Key(90),
 		restart : new Key(82)
 	};
 
 //var playerImg = document.getElementById("img_player");
 
+var input = {
+	left : false,
+	up : false,
+	right : false,
+	down : false,
+	replay : false,
+	restart : false
+}
 
 function update(dt){
 	var player = World.player;
 	var walls = World.walls;
 	var smokes = World.smokes;
 	var goals = World.goals;
-	//input
-	if(input.restart.pressed){
-		restart();
-	}
 	
 	var dtsecs=dt/1000;
 	World.timer+=dtsecs;
+	
+	input.up = rawInput.up.pressed;
+	input.down = rawInput.down.pressed;
+	input.left = rawInput.left.pressed;
+	input.right = rawInput.right.pressed;
+	input.replay = rawInput.replay.pressed;
+	input.restart = rawInput.restart.pressed;
+	
+	if(World.replaying){
+		input.up = World.rec.frames[World.frameIndex].up;
+		input.down = World.rec.frames[World.frameIndex].down;
+		input.left = World.rec.frames[World.frameIndex].left;
+		input.right = World.rec.frames[World.frameIndex].right;
+		World.frameIndex++;
+	}else{
+		World.currentRecorder.update(input);
+	}
+	
+	
 	var dir = new Vec2f(
-		((input.right.pressed | 0) - (input.left.pressed | 0)),
-		((input.down.pressed | 0) - (input.up.pressed | 0))
+		((input.right | 0) - (input.left | 0)),
+		((input.down | 0) - (input.up | 0))
 	);
 	if(dir.y!=0 && dir.x!=0){
 		dir.x *= Math.SQRT1_2;
@@ -92,9 +122,12 @@ function update(dt){
 		}
 	}
 	
+	
 	if(hayGoal){
 		if(World.record < 0 || World.record > World.timer){
 			World.record = World.timer;
+			World.recordedRecord = World.currentRecorder;
+			World.currentRecorder = new Recorder();
 		}
 		restart();
     }
@@ -102,6 +135,14 @@ function update(dt){
 	if(hayColision){
 		restart();
     }
+	
+	if(input.restart){
+		restart();
+	}
+	
+	if(input.replay){
+		replay(World.recordedRecord);
+	}
     
 }
 
@@ -109,4 +150,17 @@ function update(dt){
 function restart(){
 	World.player = new Player(15100, 8100, 10, 10);
 	World.timer = 0;
+	World.currentRecorder.restart();
+	World.replaying = false;
+	World.frameIndex=0;
+	World.rec={};
+	
+	
+}
+
+function replay(rec){
+	restart();
+	World.rec=rec;
+	World.replaying = true;
+	
 }

@@ -29,9 +29,9 @@ function handleKeyUp(event) {
 	
 };
 function setInput(code, pressed){
-	for(key in input){
-		if(input[key].code==code){
-			input[key].update(pressed);
+	for(key in rawInput){
+		if(rawInput[key].code==code){
+			rawInput[key].update(pressed);
 		}
 	}
 }
