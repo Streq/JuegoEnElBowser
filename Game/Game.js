@@ -9,7 +9,7 @@ var World = (function(mod){
 	mod.timer = 0;
 	mod.record = -1;
 	mod.currentRecorder = new Recorder();
-	mod.recordedRecord = {};
+	mod.recordedRecord = undefined;
 	
 	
 	mod.replaying=false;
@@ -141,7 +141,8 @@ function update(dt){
 	}
 	
 	if(input.replay){
-		replay(World.recordedRecord);
+		if(World.recordedRecord)
+			replay(World.recordedRecord);
 	}
     
 }
