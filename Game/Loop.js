@@ -35,9 +35,8 @@ function start(){
     var walls = World.walls;
 	
 	
-	
 	World.walls=[
-		{"pos":{"x":14100,"y":7300},"w":15000,"h":100},
+	/*	{"pos":{"x":14100,"y":7300},"w":15000,"h":100},
 		{"pos":{"x":14100,"y":10000},"w":15000,"h":100},
 		{"pos":{"x":14100,"y":7300},"w":100,"h":1000},
 		{"pos":{"x":14100,"y":8200},"w":100,"h":1000},
@@ -53,15 +52,50 @@ function start(){
 		{"pos":{"x":29100,"y":10000},"w":100,"h":10000},
 		{"pos":{"x":29100,"y":19600},"w":100,"h":10000},
 		{"pos":{"x":31900,"y":19900},"w":100,"h":10000}
-	];
+	*/];
 	
 	World.goals=[
-		{"pos":{"x":29100,"y":29900},"w":3000,"h":100}
+	//	{"pos":{"x":29100,"y":29900},"w":3000,"h":100}
 	]
 	
 	
-	World.player = new Player(15100, 8100, 10, 10);
+	//World.player = new Player(15100, 8100, 10, 10);
 	
+    level.forEach((e) => {
+        e.x *= 10;
+        e.y *= 10;
+        e.w *= 10;
+        e.h *= 10;
+        
+        switch (e.tile) {
+            case "block":
+                World.walls.push({
+                    pos: {
+                        x: e.x,
+                        y: e.y,
+
+                    },
+                    w: e.w,
+                    h: e.h
+                });
+                break;
+            case "end portal":
+                World.goals.push({
+                    pos: {
+                        x: e.x,
+                        y: e.y,
+                    },
+                    w: e.w,
+                    h: e.h
+                });
+                break;
+            case "portal":
+                World.spawnPoint = e;
+                World.player = new Player(e.x,e.y,0,0);
+                break;
+        }
+    });
+    
     setInterval(tick,0);
 }
 

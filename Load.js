@@ -22,6 +22,7 @@ function loadGame(prefix){
 		"Wall.js",
 		"Smoke.js",
 		"Player.js",
+        "Level.js",
 		"Game.js",
 		"Loop.js",
 		"Render.js"

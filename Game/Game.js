@@ -150,7 +150,8 @@ function update(dt){
 
 
 function restart(){
-	World.player = new Player(15100, 8100, 10, 10);
+    let s = World.spawnPoint;
+	World.player = new Player(s.x, s.y, 0, 0);
 	World.timer = 0;
 	World.currentRecorder.restart();
 	World.replaying = false;
