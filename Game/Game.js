@@ -1,5 +1,5 @@
 var view = new View(0, 0, 0, 0, canvas.width/2, canvas.height/2);
-view.setScale(8,8);
+view.setScale(32,32);
 
 var World = (function(mod){
 	mod.player = new Player(0,0,0,0);
