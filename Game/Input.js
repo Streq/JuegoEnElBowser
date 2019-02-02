@@ -34,6 +34,11 @@ function setInput(code, pressed){
 			rawInput[key].update(pressed);
 		}
 	}
+	for(key in rawInput2){
+		if(rawInput2[key].code==code){
+			rawInput2[key].update(pressed);
+		}
+	}
 }
 
 document.onkeydown = handleKeyDown;

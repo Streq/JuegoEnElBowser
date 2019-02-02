@@ -31,73 +31,91 @@ var Graphics = (function(mod){
 		this.timeSinceLastUpdate = 0;
 
 		var player = World.player;
+		var player2 = World.player2;
 		var walls = World.walls;
 		var smokes = World.smokes;
 		var goals = World.goals;
-
-		ctx.resetTransform();
-		ctx.clearRect(0,0,canvas.width,canvas.height);
-		view.centerX = player.pos.x;
-		view.centerY = player.pos.y;
-		view.applyTransform(ctx);
-
-		ctx.fillStyle = "#444444";
-		ctx.globalAlpha = 1;
-		ctx.fillRect(0,0,1000,1000);
-
-		if(this.drawSmoke){
-			ctx.fillStyle = "#ffa500";
-			smokes.forEach
-				(		
-					function(bul){
-						ctx.globalAlpha = bul.time/Smoke.time;
-						ctx.beginPath();
-						ctx.arc(bul.pos.x, bul.pos.y, bul.rad, 0, 2 * Math.PI);
-						ctx.fill();
-						ctx.closePath();
-					}
-				);
-		}
-		ctx.fillStyle = "#aaaaaa";
-		ctx.globalAlpha = 1;
-		walls.forEach(
-			function(wall){
-				ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
-			}
-		);
 		
-		ctx.fillStyle = "#0000ff";
-		ctx.globalAlpha = 1;
-		goals.forEach(
-			function(wall){
-				ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
-			}
-		);
-
-		if(this.debugDraw){
-			var vely = player.vel.y*Logic.frameSecs;
-			var velx = player.vel.x*Logic.frameSecs;
-			drawCollisionCheck(player.pos.x,player.pos.y,player.w,player.h,velx,vely);
-		}
-
-		ctx.fillStyle = "#00FF00";
-		ctx.globalAlpha = 1;
-		ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
-
-
-		ctx.resetTransform();
-		ctx.fillStyle = "#FFFFFF";
-		ctx.globalAlpha = 1;
-		ctx.font = "25px Arial";
-		ctx.fillText(World.timer.toFixed(1),10,25);
 		
-		if(World.record>=0){
+		let pjs = twoPlayers? [{ctx:ctx, player:player} , {ctx:ctx2, player:player2}]:
+							  [{ctx:ctx, player:player}];
+		
+		
+		pjs.forEach((pj,index)=>{
+			let ctx = pj.ctx;
+			
 			ctx.resetTransform();
-			ctx.fillStyle = "#0000FF";
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			view.centerX = pj.player.pos.x;
+			view.centerY = pj.player.pos.y;
+			view.applyTransform(ctx);
+
+			ctx.fillStyle = "#444444";
+			ctx.globalAlpha = 1;
+			ctx.fillRect(0,0,1000,1000);
+
+			if(this.drawSmoke){
+				ctx.fillStyle = "#ffa500";
+				smokes.forEach
+					(		
+						function(bul){
+							ctx.globalAlpha = bul.time/Smoke.time;
+							ctx.beginPath();
+							ctx.arc(bul.pos.x, bul.pos.y, bul.rad, 0, 2 * Math.PI);
+							ctx.fill();
+							ctx.closePath();
+						}
+					);
+			}
+			ctx.fillStyle = "#aaaaaa";
+			ctx.globalAlpha = 1;
+			walls.forEach(
+				function(wall){
+					ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
+				}
+			);
+
+			ctx.fillStyle = "#0000ff";
+			ctx.globalAlpha = 1;
+			goals.forEach(
+				function(wall){
+					ctx.fillRect(wall.pos.x, wall.pos.y, wall.w, wall.h);
+				}
+			);
+
+			if(this.debugDraw){
+				var vely = player.vel.y*Logic.frameSecs;
+				var velx = player.vel.x*Logic.frameSecs;
+				drawCollisionCheck(player.pos.x,player.pos.y,player.w,player.h,velx,vely);
+			}
+
+			ctx.fillStyle = "#00FF00";
+			ctx.globalAlpha = 1;
+			ctx.fillRect(player.pos.x,player.pos.y,player.w,player.h);
+
+
+			if(twoPlayers){
+				ctx.fillStyle = "#00FFFF";
+				ctx.globalAlpha = 1;
+				ctx.fillRect(player2.pos.x,player2.pos.y,player2.w,player2.h);
+			}
+
+			ctx.resetTransform();
+			ctx.fillStyle = "#FFFFFF";
 			ctx.globalAlpha = 1;
 			ctx.font = "25px Arial";
-			ctx.fillText(World.record.toFixed(1),10,50);
-		}
+			ctx.fillText(World.timer.toFixed(1),10,25);
+
+			if(World.record>=0){
+				ctx.resetTransform();
+				ctx.fillStyle = "#0000FF";
+				ctx.globalAlpha = 1;
+				ctx.font = "25px Arial";
+				ctx.fillText(World.record.toFixed(1),10,50);
+			}
+		})
+		
+		
 	};
 
 	return mod;

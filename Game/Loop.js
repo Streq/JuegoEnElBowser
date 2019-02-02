@@ -92,6 +92,8 @@ function start(){
             case "portal":
                 World.spawnPoint = e;
                 World.player = new Player(e.x,e.y,0,0);
+				World.player2 = new Player(e.x,e.y,0,0);
+				
                 break;
         }
     });
