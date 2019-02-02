@@ -154,17 +154,6 @@ function update(dt) {
 		);
 
 
-		smokes.forEach(
-			function (bul, num) {
-				bul.update(dtsecs);
-			}
-		);
-
-		for (var i = smokes.length - 1; i >= 0; --i) {
-			if (smokes[i].destroy) {
-				smokes.splice(i, 1);
-			}
-		}
 
 
 		if (hayGoal) {
@@ -190,7 +179,18 @@ function update(dt) {
 		}
 
 	});
+	
+	smokes.forEach(
+		function (bul, num) {
+			bul.update(dtsecs);
+		}
+	);
 
+	for (var i = smokes.length - 1; i >= 0; --i) {
+		if (smokes[i].destroy) {
+			smokes.splice(i, 1);
+		}
+	}
 
 }
 
