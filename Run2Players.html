@@ -1,0 +1,39 @@
+<html>
+	<head>
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		
+		<style>
+            canvas {
+                border:1px solid #d3d3d3;
+                background-color: #333333;
+            }
+		</style>
+	</head>
+	
+
+	<body onload="start();">
+		<canvas id="canvas1" width="600" height="600">
+			e no anda la canvas aca
+		</canvas>
+		<canvas id="canvas" width="600" height="600">
+			e no anda la canvas aca
+		</canvas>
+		
+		<script>
+			//var prefijo = "https://rawgit.com/Streq/JuegoEnElBowser/master/";
+			var prefijo = "";
+			var twoPlayers = true;
+			{
+				let script = document.createElement("script");
+				script.src="Load.js";
+				script.async=false;
+				script.onload=function(){
+					loadGame(prefijo);
+				};
+				document.head.appendChild(script);
+			}
+		</script>
+		
+	</body>
+</html>
