@@ -1,5 +1,7 @@
 # JuegoEnElBowser
 
-[one player](Run.html)
+"""Juego""" sencillo usando puramente javascript
 
-[two players](Run2Players.html)
+[1 pj](Run.html)
+
+[2 pjs](Run2Players.html)
